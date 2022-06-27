@@ -40,7 +40,9 @@ struct AppView_Previews: PreviewProvider {
                     ]
                 ),
                 reducer: AppDomain.reducer,
-                environment: .init()
+                environment: .init(
+                    makeUUID: UUID.init
+                )
             )
         )
     }

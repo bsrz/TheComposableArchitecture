@@ -11,9 +11,7 @@ enum AppDomain {
     }
 
     struct Environment {
-
-        init() { }
-
+        var makeUUID: () -> UUID
     }
 
     static let reducer: Reducer<State, Action, Environment> = .combine(
@@ -26,7 +24,7 @@ enum AppDomain {
         .init { state, action, env in
             switch action {
             case .add:
-                state.todos.insert(.init(), at: 0)
+                state.todos.insert(.init(id: env.makeUUID()), at: 0)
                 return .none
 
             case .todo(id: let id, action: let action):
