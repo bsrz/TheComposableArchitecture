@@ -18,6 +18,11 @@ struct AppView: View {
                     )
                 }
                 .navigationTitle("Todos")
+                .navigationBarItems(
+                    trailing: Button("Add") {
+                        viewStore.send(.add)
+                    }
+                )
             }
         }
     }

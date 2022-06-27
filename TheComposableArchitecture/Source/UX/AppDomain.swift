@@ -6,6 +6,7 @@ enum AppDomain {
     }
 
     enum Action {
+        case add
         case todo(index: Int, action: TodoDomain.Action)
     }
 
@@ -15,10 +16,22 @@ enum AppDomain {
 
     }
 
-    static let reducer: Reducer<State, Action, Environment> = TodoDomain.reducer
-        .forEach(
-            state: \AppDomain.State.todos,
-            action: /AppDomain.Action.todo(index:action:),
-            environment: { _ in .init() }
-        )
+    static let reducer: Reducer<State, Action, Environment> = .combine(
+        TodoDomain.reducer
+            .forEach(
+                state: \AppDomain.State.todos,
+                action: /AppDomain.Action.todo(index:action:),
+                environment: { _ in .init() }
+            ),
+        .init { state, action, env in
+            switch action {
+            case .add:
+                state.todos.insert(.init(), at: 0)
+                return .none
+
+            case .todo(index: let index, action: let action):
+                return .none
+            }
+        }
+    )
 }
