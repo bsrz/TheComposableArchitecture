@@ -6,8 +6,7 @@ enum AppDomain {
     }
 
     enum Action {
-        case todoCheckboxTapped(index: Int)
-        case todoTextFieldChanged(index: Int, text: String)
+        case todo(index: Int, action: TodoDomain.Action)
     }
 
     struct Environment {
@@ -16,15 +15,10 @@ enum AppDomain {
 
     }
 
-    static let reducer: Reducer<State, Action, Environment> = .init { state, action, env in
-        switch action {
-        case .todoCheckboxTapped(index: let index):
-            state.todos[index].isComplete.toggle()
-            return .none
-
-        case .todoTextFieldChanged(index: let index, text: let text):
-            state.todos[index].description = text
-            return .none
-        }
-    }
+    static let reducer: Reducer<State, Action, Environment> = TodoDomain.reducer
+        .forEach(
+            state: \AppDomain.State.todos,
+            action: /AppDomain.Action.todo(index:action:),
+            environment: { _ in .init() }
+        )
 }

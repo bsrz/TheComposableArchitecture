@@ -9,25 +9,13 @@ struct AppView: View {
         NavigationView {
             WithViewStore(store) { viewStore in
                 List {
-                    ForEach(Array(viewStore.todos.enumerated()), id: \.element.id) { index, todo in
-                        HStack {
-                            Button {
-                                viewStore.send(.todoCheckboxTapped(index: index))
-                            } label: {
-                                Image(systemName: todo.isComplete ? "checkmark.square" : "square")
-                            }
-                            .buttonStyle(.plain)
-
-                            TextField(
-                                "untitled",
-                                text: viewStore.binding(
-                                    get: { $0.todos[index].description },
-                                    send: { .todoTextFieldChanged(index: index, text: $0)}
-                                )
-                            )
-                        }
-                        .foregroundColor(todo.isComplete ? .gray : nil)
-                    }
+                    ForEachStore(
+                        store.scope(
+                            state: \.todos,
+                            action: AppDomain.Action.todo(index:action:)
+                        ),
+                        content: TodoView.init(store:)
+                    )
                 }
                 .navigationTitle("Todos")
             }
