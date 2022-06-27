@@ -2,12 +2,12 @@ import ComposableArchitecture
 
 enum AppDomain {
     struct State: Equatable {
-        var todos: [Todo] = []
+        var todos: IdentifiedArrayOf<Todo> = []
     }
 
     enum Action {
         case add
-        case todo(index: Int, action: TodoDomain.Action)
+        case todo(id: Todo.ID, action: TodoDomain.Action)
     }
 
     struct Environment {
@@ -20,7 +20,7 @@ enum AppDomain {
         TodoDomain.reducer
             .forEach(
                 state: \AppDomain.State.todos,
-                action: /AppDomain.Action.todo(index:action:),
+                action: /AppDomain.Action.todo(id:action:),
                 environment: { _ in .init() }
             ),
         .init { state, action, env in
@@ -29,7 +29,7 @@ enum AppDomain {
                 state.todos.insert(.init(), at: 0)
                 return .none
 
-            case .todo(index: let index, action: let action):
+            case .todo(id: let id, action: let action):
                 return .none
             }
         }

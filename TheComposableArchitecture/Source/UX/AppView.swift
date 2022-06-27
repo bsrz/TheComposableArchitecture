@@ -12,7 +12,7 @@ struct AppView: View {
                     ForEachStore(
                         store.scope(
                             state: \.todos,
-                            action: AppDomain.Action.todo(index:action:)
+                            action: AppDomain.Action.todo(id:action:)
                         ),
                         content: TodoView.init(store:)
                     )
