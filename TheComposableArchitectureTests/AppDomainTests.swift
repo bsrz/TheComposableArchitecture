@@ -5,12 +5,15 @@ import XCTest
 
 class AppDomainTests: XCTestCase {
 
+    private let scheduler = DispatchQueue.test
+
     func testDomain_whenAddingTodo_updatesStateAsExpected() {
         let uuid = UUID(uuidString: "00000000-0000-0000-0000-000000000000")!
         let store = TestStore(
             initialState: .init(),
             reducer: AppDomain.reducer,
             environment: .init(
+                mainScheduler: scheduler.eraseToAnyScheduler(),
                 makeUUID: { uuid }
             )
         )
@@ -39,6 +42,7 @@ class AppDomainTests: XCTestCase {
             ),
             reducer: AppDomain.reducer,
             environment: .init(
+                mainScheduler: scheduler.eraseToAnyScheduler(),
                 makeUUID: { fatalError() }
             )
         )
@@ -47,7 +51,7 @@ class AppDomainTests: XCTestCase {
             state.todos[id: uuid]?.isComplete = true
         }
 
-        _ = XCTWaiter.wait(for: [expectation(description: name)], timeout: 1.1)
+        scheduler.advance(by: 1)
 
         store.receive(.todoDelayCompleted)
     }
@@ -69,6 +73,7 @@ class AppDomainTests: XCTestCase {
             ),
             reducer: AppDomain.reducer,
             environment: .init(
+                mainScheduler: scheduler.eraseToAnyScheduler(),
                 makeUUID: { fatalError() }
             )
         )
@@ -88,7 +93,7 @@ class AppDomainTests: XCTestCase {
             ]
         }
 
-        _ = XCTWaiter.wait(for: [expectation(description: name)], timeout: 0.5)
+        scheduler.advance(by: 0.5)
 
         store.send(.todo(id: UUID(uuidString: "00000000-0000-0000-0000-000000000000")!, action: .checkboxTapped)) { state in
             state.todos = [
@@ -105,7 +110,7 @@ class AppDomainTests: XCTestCase {
             ]
         }
 
-        _ = XCTWaiter.wait(for: [expectation(description: name)], timeout: 1.1)
+        scheduler.advance(by: 1)
 
         store.receive(.todoDelayCompleted)
     }

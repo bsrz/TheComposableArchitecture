@@ -15,6 +15,7 @@ struct App: SwiftUI.App {
                     ),
                     reducer: AppDomain.reducer.debug(),
                     environment: .init(
+                        mainScheduler: .main,
                         makeUUID: UUID.init
                     )
                 )

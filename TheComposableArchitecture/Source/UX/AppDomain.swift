@@ -12,6 +12,7 @@ enum AppDomain {
     }
 
     struct Environment {
+        var mainScheduler: AnySchedulerOf<DispatchQueue>
         var makeUUID: () -> UUID
     }
 
@@ -31,7 +32,7 @@ enum AppDomain {
             case .todo(id: _, action: .checkboxTapped):
                 struct CancelDelayId: Hashable { }
                 return Effect(value: Action.todoDelayCompleted)
-                    .debounce(id: CancelDelayId(), for: 1, scheduler: DispatchQueue.main)
+                    .debounce(id: CancelDelayId(), for: 1, scheduler: env.mainScheduler)
 
             case .todo(id: let id, action: let action):
                 return .none
