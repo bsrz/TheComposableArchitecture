@@ -27,6 +27,18 @@ enum AppDomain {
                 state.todos.insert(.init(id: env.makeUUID()), at: 0)
                 return .none
 
+            case .todo(id: _, action: .checkboxTapped):
+                state.todos = IdentifiedArrayOf(uniqueElements: state
+                    .todos
+                    .enumerated()
+                    .sorted { lhs, rhs in
+                        (!lhs.element.isComplete && rhs.element.isComplete)
+                            || lhs.offset < rhs.offset
+                    }
+                    .map(\.element)
+                )
+                return .none
+
             case .todo(id: let id, action: let action):
                 return .none
             }

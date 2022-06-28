@@ -9,7 +9,9 @@ struct TodoView: View {
         WithViewStore(store) { viewStore in
             HStack {
                 Button {
-                    viewStore.send(.checkboxTapped)
+                    withAnimation {
+                        viewStore.send(.checkboxTapped)
+                    }
                 } label: {
                     Image(systemName: viewStore.isComplete ? "checkmark.square" : "square")
                 }

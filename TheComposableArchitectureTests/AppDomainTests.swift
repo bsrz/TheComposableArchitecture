@@ -47,4 +47,41 @@ class AppDomainTests: XCTestCase {
             state.todos[id: uuid]?.isComplete = true
         }
     }
+    func testDomain_whenCompletingTodo_sortsStateAsExpected() {
+        let store = TestStore(
+            initialState: .init(
+                todos: [
+                    .init(
+                        id: UUID(uuidString: "00000000-0000-0000-0000-000000000000")!,
+                        description: "Milk",
+                        isComplete: false
+                    ),
+                    .init(
+                        id: UUID(uuidString: "00000000-0000-0000-0000-000000000001")!,
+                        description: "Eggs",
+                        isComplete: false
+                    )
+                ]
+            ),
+            reducer: AppDomain.reducer,
+            environment: .init(
+                makeUUID: { fatalError() }
+            )
+        )
+
+        store.send(.todo(id: UUID(uuidString: "00000000-0000-0000-0000-000000000000")!, action: .checkboxTapped)) { state in
+            state.todos = [
+                .init(
+                    id: UUID(uuidString: "00000000-0000-0000-0000-000000000001")!,
+                    description: "Eggs",
+                    isComplete: false
+                ),
+                .init(
+                    id: UUID(uuidString: "00000000-0000-0000-0000-000000000000")!,
+                    description: "Milk",
+                    isComplete: true
+                )
+            ]
+        }
+    }
 }
