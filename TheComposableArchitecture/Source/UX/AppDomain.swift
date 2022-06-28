@@ -8,6 +8,7 @@ enum AppDomain {
     enum Action {
         case add
         case todo(id: Todo.ID, action: TodoDomain.Action)
+        case todoDelayCompleted
     }
 
     struct Environment {
@@ -28,18 +29,26 @@ enum AppDomain {
                 return .none
 
             case .todo(id: _, action: .checkboxTapped):
+                struct CancelDelayId: Hashable { }
+                return Effect(value: Action.todoDelayCompleted)
+                    .delay(for: 1, scheduler: DispatchQueue.main)
+                    .eraseToEffect()
+                    .cancellable(id: CancelDelayId(), cancelInFlight: true)
+
+            case .todo(id: let id, action: let action):
+                return .none
+
+            case .todoDelayCompleted:
                 state.todos = IdentifiedArrayOf(uniqueElements: state
                     .todos
                     .enumerated()
                     .sorted { lhs, rhs in
                         (!lhs.element.isComplete && rhs.element.isComplete)
-                            || lhs.offset < rhs.offset
+                        || lhs.offset < rhs.offset
                     }
                     .map(\.element)
                 )
-                return .none
 
-            case .todo(id: let id, action: let action):
                 return .none
             }
         }

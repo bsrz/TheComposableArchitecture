@@ -8,7 +8,7 @@ struct App: SwiftUI.App {
                 store: .init(
                     initialState: .init(
                         todos: [
-                            .init(description: "Milk", isComplete: true),
+                            .init(description: "Milk", isComplete: false),
                             .init(description: "Eggs", isComplete: false),
                             .init(description: "Hand Soap", isComplete: false)
                         ]
