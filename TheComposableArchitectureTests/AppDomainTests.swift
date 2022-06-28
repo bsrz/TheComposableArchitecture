@@ -46,6 +46,10 @@ class AppDomainTests: XCTestCase {
         store.send(.todo(id: uuid, action: .checkboxTapped)) { state in
             state.todos[id: uuid]?.isComplete = true
         }
+
+        _ = XCTWaiter.wait(for: [expectation(description: name)], timeout: 1.1)
+
+        store.receive(.todoDelayCompleted)
     }
     func testDomain_whenCompletingTodo_sortsStateAsExpected() {
         let store = TestStore(
@@ -72,16 +76,37 @@ class AppDomainTests: XCTestCase {
         store.send(.todo(id: UUID(uuidString: "00000000-0000-0000-0000-000000000000")!, action: .checkboxTapped)) { state in
             state.todos = [
                 .init(
-                    id: UUID(uuidString: "00000000-0000-0000-0000-000000000001")!,
-                    description: "Eggs",
-                    isComplete: false
-                ),
-                .init(
                     id: UUID(uuidString: "00000000-0000-0000-0000-000000000000")!,
                     description: "Milk",
                     isComplete: true
+                ),
+                .init(
+                    id: UUID(uuidString: "00000000-0000-0000-0000-000000000001")!,
+                    description: "Eggs",
+                    isComplete: false
                 )
             ]
         }
+
+        _ = XCTWaiter.wait(for: [expectation(description: name)], timeout: 0.5)
+
+        store.send(.todo(id: UUID(uuidString: "00000000-0000-0000-0000-000000000000")!, action: .checkboxTapped)) { state in
+            state.todos = [
+                .init(
+                    id: UUID(uuidString: "00000000-0000-0000-0000-000000000000")!,
+                    description: "Milk",
+                    isComplete: false
+                ),
+                .init(
+                    id: UUID(uuidString: "00000000-0000-0000-0000-000000000001")!,
+                    description: "Eggs",
+                    isComplete: false
+                )
+            ]
+        }
+
+        _ = XCTWaiter.wait(for: [expectation(description: name)], timeout: 1.1)
+
+        store.receive(.todoDelayCompleted)
     }
 }

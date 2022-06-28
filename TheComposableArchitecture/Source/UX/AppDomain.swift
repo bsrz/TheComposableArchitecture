@@ -5,7 +5,7 @@ enum AppDomain {
         var todos: IdentifiedArrayOf<Todo> = []
     }
 
-    enum Action {
+    enum Action: Equatable {
         case add
         case todo(id: Todo.ID, action: TodoDomain.Action)
         case todoDelayCompleted
@@ -31,9 +31,7 @@ enum AppDomain {
             case .todo(id: _, action: .checkboxTapped):
                 struct CancelDelayId: Hashable { }
                 return Effect(value: Action.todoDelayCompleted)
-                    .delay(for: 1, scheduler: DispatchQueue.main)
-                    .eraseToEffect()
-                    .cancellable(id: CancelDelayId(), cancelInFlight: true)
+                    .debounce(id: CancelDelayId(), for: 1, scheduler: DispatchQueue.main)
 
             case .todo(id: let id, action: let action):
                 return .none

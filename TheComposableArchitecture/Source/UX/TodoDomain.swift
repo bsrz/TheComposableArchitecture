@@ -1,7 +1,7 @@
 import ComposableArchitecture
 
 enum TodoDomain {
-    enum Action {
+    enum Action: Equatable {
         case checkboxTapped
         case textFieldChange(String)
     }
