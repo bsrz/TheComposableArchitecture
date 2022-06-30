@@ -1,9 +1,9 @@
 import ComposableArchitecture
 import SwiftUI
 
-struct AppView: View {
+struct TodoListView: View {
 
-    let store: Store<AppDomain.State, AppDomain.Action>
+    let store: Store<TodoListDomain.State, TodoListDomain.Action>
 
     var body: some View {
         NavigationView {
@@ -12,7 +12,7 @@ struct AppView: View {
                     ForEachStore(
                         store.scope(
                             state: \.todos,
-                            action: AppDomain.Action.todo(id:action:)
+                            action: TodoListDomain.Action.todo(id:action:)
                         ),
                         content: TodoView.init(store:)
                     )
@@ -30,7 +30,7 @@ struct AppView: View {
 
 struct AppView_Previews: PreviewProvider {
     static var previews: some View {
-        AppView(
+        TodoListView(
             store: .init(
                 initialState: .init(
                     todos: [
@@ -39,7 +39,7 @@ struct AppView_Previews: PreviewProvider {
                         .init(description: "Hand Soap", isComplete: false)
                     ]
                 ),
-                reducer: AppDomain.reducer,
+                reducer: TodoListDomain.reducer,
                 environment: .init(
                     mainScheduler: .main,
                     makeUUID: UUID.init

@@ -1,6 +1,6 @@
 import ComposableArchitecture
 
-enum AppDomain {
+enum TodoListDomain {
     struct State: Equatable {
         var todos: IdentifiedArrayOf<Todo> = []
     }
@@ -19,8 +19,8 @@ enum AppDomain {
     static let reducer: Reducer<State, Action, Environment> = .combine(
         TodoDomain.reducer
             .forEach(
-                state: \AppDomain.State.todos,
-                action: /AppDomain.Action.todo(id:action:),
+                state: \TodoListDomain.State.todos,
+                action: /TodoListDomain.Action.todo(id:action:),
                 environment: { _ in .init() }
             ),
         .init { state, action, env in

@@ -11,7 +11,7 @@ class AppDomainTests: XCTestCase {
         let uuid = UUID(uuidString: "00000000-0000-0000-0000-000000000000")!
         let store = TestStore(
             initialState: .init(),
-            reducer: AppDomain.reducer,
+            reducer: TodoListDomain.reducer,
             environment: .init(
                 mainScheduler: scheduler.eraseToAnyScheduler(),
                 makeUUID: { uuid }
@@ -40,7 +40,7 @@ class AppDomainTests: XCTestCase {
                     )
                 ]
             ),
-            reducer: AppDomain.reducer,
+            reducer: TodoListDomain.reducer,
             environment: .init(
                 mainScheduler: scheduler.eraseToAnyScheduler(),
                 makeUUID: { fatalError() }
@@ -71,7 +71,7 @@ class AppDomainTests: XCTestCase {
                     )
                 ]
             ),
-            reducer: AppDomain.reducer,
+            reducer: TodoListDomain.reducer,
             environment: .init(
                 mainScheduler: scheduler.eraseToAnyScheduler(),
                 makeUUID: { fatalError() }

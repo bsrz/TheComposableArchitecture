@@ -4,7 +4,7 @@ import SwiftUI
 struct App: SwiftUI.App {
     var body: some Scene {
         WindowGroup {
-            AppView(
+            TodoListView(
                 store: .init(
                     initialState: .init(
                         todos: [
@@ -13,7 +13,7 @@ struct App: SwiftUI.App {
                             .init(description: "Hand Soap", isComplete: false)
                         ]
                     ),
-                    reducer: AppDomain.reducer.debug(),
+                    reducer: TodoListDomain.reducer.debug(),
                     environment: .init(
                         mainScheduler: .main,
                         makeUUID: UUID.init
