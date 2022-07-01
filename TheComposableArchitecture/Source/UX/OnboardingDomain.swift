@@ -26,14 +26,14 @@ enum OnboardingDomain {
         }
     }
 
-    enum Action {
+    enum Action: Equatable {
         case next
         case firstName(String)
         case lastName(String)
         case email(String)
         case delegate(DelegateAction)
 
-        enum DelegateAction {
+        enum DelegateAction: Equatable {
             case onboardingComplete
         }
     }

@@ -1,117 +1,117 @@
+@testable import TheComposableArchitecture
 import ComposableArchitecture
 import XCTest
-
-@testable import TheComposableArchitecture
 
 class AppDomainTests: XCTestCase {
 
     private let scheduler = DispatchQueue.test
 
-    func testDomain_whenAddingTodo_updatesStateAsExpected() {
-        let uuid = UUID(uuidString: "00000000-0000-0000-0000-000000000000")!
-        let store = TestStore(
-            initialState: .init(),
-            reducer: TodoListDomain.reducer,
-            environment: .init(
-                mainScheduler: scheduler.eraseToAnyScheduler(),
-                makeUUID: { uuid }
-            )
-        )
-
-        store.send(.add) { state in
-            state.todos = [
-                .init(
-                    id: uuid,
-                    description: "",
-                    isComplete: false
-                )
-            ]
-        }
-    }
-    func testDomain_whenCompletingTodo_updatesStateAsExpected() {
-        let uuid = UUID(uuidString: "00000000-0000-0000-0000-000000000000")!
+    func testDomain_whenIncompleteOnboarding() throws {
+        let userDefaults = UserDefaults(suiteName: name)!
         let store = TestStore(
             initialState: .init(
-                todos: [
-                    .init(
-                        id: uuid,
-                        description: "Milk",
-                        isComplete: false
-                    )
-                ]
+                onboarding: nil,
+                todoList: .init(),
+                settings: .init()
             ),
-            reducer: TodoListDomain.reducer,
+            reducer: AppDomain.reducer,
             environment: .init(
                 mainScheduler: scheduler.eraseToAnyScheduler(),
-                makeUUID: { fatalError() }
+                makeUUID: UUID.init,
+                userDefaults: userDefaults
             )
         )
 
-        store.send(.todo(id: uuid, action: .checkboxTapped)) { state in
-            state.todos[id: uuid]?.isComplete = true
+        store.send(.onAppear) { state in
+            state.onboarding = .init()
         }
-
-        scheduler.advance(by: 1)
-
-        store.receive(.todoDelayCompleted)
     }
-    func testDomain_whenCompletingTodo_sortsStateAsExpected() {
+    func testDomain_whenCompletingOnboarding() throws {
+        let userDefaults = UserDefaults(suiteName: name)!
+        userDefaults.removePersistentDomain(forName: name)
         let store = TestStore(
             initialState: .init(
-                todos: [
-                    .init(
-                        id: UUID(uuidString: "00000000-0000-0000-0000-000000000000")!,
-                        description: "Milk",
-                        isComplete: false
-                    ),
-                    .init(
-                        id: UUID(uuidString: "00000000-0000-0000-0000-000000000001")!,
-                        description: "Eggs",
-                        isComplete: false
-                    )
-                ]
+                onboarding: nil,
+                todoList: .init(),
+                settings: .init()
             ),
-            reducer: TodoListDomain.reducer,
+            reducer: AppDomain.reducer,
             environment: .init(
                 mainScheduler: scheduler.eraseToAnyScheduler(),
-                makeUUID: { fatalError() }
+                makeUUID: UUID.init,
+                userDefaults: userDefaults
             )
         )
 
-        store.send(.todo(id: UUID(uuidString: "00000000-0000-0000-0000-000000000000")!, action: .checkboxTapped)) { state in
-            state.todos = [
-                .init(
-                    id: UUID(uuidString: "00000000-0000-0000-0000-000000000000")!,
-                    description: "Milk",
-                    isComplete: true
-                ),
-                .init(
-                    id: UUID(uuidString: "00000000-0000-0000-0000-000000000001")!,
-                    description: "Eggs",
-                    isComplete: false
-                )
-            ]
+        // Welcome
+        store.send(.onAppear) { state in
+            state.onboarding = .init()
+            state.onboarding?.step = .welcome
         }
 
-        scheduler.advance(by: 0.5)
-
-        store.send(.todo(id: UUID(uuidString: "00000000-0000-0000-0000-000000000000")!, action: .checkboxTapped)) { state in
-            state.todos = [
-                .init(
-                    id: UUID(uuidString: "00000000-0000-0000-0000-000000000000")!,
-                    description: "Milk",
-                    isComplete: false
-                ),
-                .init(
-                    id: UUID(uuidString: "00000000-0000-0000-0000-000000000001")!,
-                    description: "Eggs",
-                    isComplete: false
-                )
-            ]
+        // First Name
+        store.send(.onboarding(.next)) { state in
+            state.onboarding?.step = .firstName
+        }
+        store.send(.onboarding(.firstName("foo"))) { state in
+            state.onboarding?.user.firstName = "foo"
         }
 
-        scheduler.advance(by: 1)
+        // Last Name
+        store.send(.onboarding(.next)) { state in
+            state.onboarding?.step = .lastName
+        }
+        store.send(.onboarding(.lastName("bar"))) { state in
+            state.onboarding?.user.lastName = "bar"
+        }
 
-        store.receive(.todoDelayCompleted)
+        // Email
+        store.send(.onboarding(.next)) { state in
+            state.onboarding?.step = .email
+        }
+        store.send(.onboarding(.email("qux"))) { state in
+            state.onboarding?.user.email = "qux"
+        }
+
+        store.send(.onboarding(.next))
+        store.receive(.onboarding(.delegate(.onboardingComplete))) { state in
+            state.onboarding = nil
+        }
+
+        XCTAssertNotNil(userDefaults.data(forKey: "loggedInUser"))
+    }
+    func testDomain_whenLoggingOut() throws {
+        let userDefaults = UserDefaults(suiteName: name)!
+        userDefaults.removePersistentDomain(forName: name)
+
+        let user = User(firstName: "foo", lastName: "bar", email: "qux")
+        let encoded = try JSONEncoder().encode(user)
+
+        userDefaults.set(encoded, forKey: "loggedInUser")
+        XCTAssertNotNil(userDefaults.data(forKey: "loggedInUser"))
+
+        let store = TestStore(
+            initialState: .init(
+                onboarding: .init(),
+                todoList: .init(),
+                settings: .init()
+            ),
+            reducer: AppDomain.reducer,
+            environment: .init(
+                mainScheduler: scheduler.eraseToAnyScheduler(),
+                makeUUID: UUID.init,
+                userDefaults: userDefaults
+            )
+        )
+
+        store.send(.onAppear) { state in
+            state.onboarding = nil
+        }
+
+        store.send(.settings(.delegate(.logout))) { state in
+            state.onboarding = .init()
+        }
+
+        XCTAssertNil(userDefaults.data(forKey: "loggedInUser"))
     }
 }

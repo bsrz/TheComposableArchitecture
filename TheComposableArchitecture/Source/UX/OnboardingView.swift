@@ -13,16 +13,34 @@ struct OnboardingView: View {
                         .padding()
                 }
                 if viewStore.step == .firstName {
-                    TextField("What's your first name?", text: viewStore.binding(get: \.user.firstName, send: OnboardingDomain.Action.firstName))
-                        .padding()
+                    TextField(
+                        "What's your first name?",
+                        text: viewStore.binding(
+                            get: \.user.firstName,
+                            send: OnboardingDomain.Action.firstName
+                        )
+                    )
+                    .padding()
                 }
                 if viewStore.step == .lastName {
-                    TextField("What's your last name?", text: viewStore.binding(get: \.user.lastName, send: OnboardingDomain.Action.lastName))
-                        .padding()
+                    TextField(
+                        "What's your last name?",
+                        text: viewStore.binding(
+                            get: \.user.lastName,
+                            send: OnboardingDomain.Action.lastName
+                        )
+                    )
+                    .padding()
                 }
                 if viewStore.step == .email {
-                    TextField("What's your email?", text: viewStore.binding(get: \.user.email, send: OnboardingDomain.Action.email))
-                        .padding()
+                    TextField(
+                        "What's your email?",
+                        text: viewStore.binding(
+                            get: \.user.email,
+                            send: OnboardingDomain.Action.email
+                        )
+                    )
+                    .padding()
                 }
 
                 Button("Next") {

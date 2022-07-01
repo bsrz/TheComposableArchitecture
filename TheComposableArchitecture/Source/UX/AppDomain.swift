@@ -7,7 +7,7 @@ enum AppDomain {
         var settings: SettingsDomain.State
     }
 
-    enum Action {
+    enum Action: Equatable {
         case onAppear
         case onboarding(OnboardingDomain.Action)
         case todoList(TodoListDomain.Action)
@@ -59,6 +59,8 @@ enum AppDomain {
                     state.onboarding = .init()
                     return .none
                 }
+
+                state.onboarding = nil
 
                 return .none
 

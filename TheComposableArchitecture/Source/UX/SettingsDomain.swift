@@ -4,10 +4,10 @@ enum SettingsDomain {
     struct State: Equatable {
     }
 
-    enum Action {
+    enum Action: Equatable {
         case delegate(DelegateAction)
 
-        enum DelegateAction {
+        enum DelegateAction: Equatable {
             case logout
         }
     }
