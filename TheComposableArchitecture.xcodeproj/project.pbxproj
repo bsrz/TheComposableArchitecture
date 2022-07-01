@@ -177,9 +177,9 @@
 				D19F5BB3286F4A0900C5C6AC /* OnboardingView.swift */,
 				D19F5BBC286F5D3400C5C6AC /* SettingsDomain.swift */,
 				D19F5BBD286F5D3400C5C6AC /* SettingsView.swift */,
+				8B304A01286A37BD00DB7952 /* TodoDomain.swift */,
 				8B3049F7286A217500DB7952 /* TodoListDomain.swift */,
 				8B3049F8286A217500DB7952 /* TodoListView.swift */,
-				8B304A01286A37BD00DB7952 /* TodoDomain.swift */,
 				8B304A02286A37BD00DB7952 /* TodoView.swift */,
 			);
 			path = UX;

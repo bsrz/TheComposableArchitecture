@@ -4,19 +4,24 @@ import SwiftUI
 struct App: SwiftUI.App {
     var body: some Scene {
         WindowGroup {
-            TodoListView(
+            AppView(
                 store: .init(
                     initialState: .init(
-                        todos: [
-                            .init(description: "Milk", isComplete: false),
-                            .init(description: "Eggs", isComplete: false),
-                            .init(description: "Hand Soap", isComplete: false)
-                        ]
+                        onboarding: nil,
+                        todoList: .init(
+                            todos: [
+                                .init(description: "Milk", isComplete: false),
+                                .init(description: "Eggs", isComplete: false),
+                                .init(description: "Bacon", isComplete: false)
+                            ]
+                        ),
+                        settings: .init()
                     ),
-                    reducer: TodoListDomain.reducer.debug(),
+                    reducer: AppDomain.reducer.debug(),
                     environment: .init(
                         mainScheduler: .main,
-                        makeUUID: UUID.init
+                        makeUUID: UUID.init,
+                        userDefaults: .standard
                     )
                 )
             )

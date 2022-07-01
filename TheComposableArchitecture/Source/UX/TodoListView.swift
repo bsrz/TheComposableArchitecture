@@ -17,6 +17,7 @@ struct TodoListView: View {
                         content: TodoView.init(store:)
                     )
                 }
+                .listStyle(.plain)
                 .navigationTitle("Todos")
                 .navigationBarItems(
                     trailing: Button("Add") {
