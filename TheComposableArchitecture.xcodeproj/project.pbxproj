@@ -19,6 +19,11 @@
 		8B304A00286A2EA700DB7952 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 8B3049FF286A2EA700DB7952 /* ComposableArchitecture */; };
 		8B304A03286A37BD00DB7952 /* TodoDomain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B304A01286A37BD00DB7952 /* TodoDomain.swift */; };
 		8B304A04286A37BD00DB7952 /* TodoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B304A02286A37BD00DB7952 /* TodoView.swift */; };
+		D19F5BB4286F4A0900C5C6AC /* OnboardingDomain.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19F5BB2286F4A0900C5C6AC /* OnboardingDomain.swift */; };
+		D19F5BB5286F4A0900C5C6AC /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19F5BB3286F4A0900C5C6AC /* OnboardingView.swift */; };
+		D19F5BBB286F4E9400C5C6AC /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19F5BBA286F4E9400C5C6AC /* User.swift */; };
+		D19F5BBF286F5D3400C5C6AC /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19F5BBD286F5D3400C5C6AC /* SettingsView.swift */; };
+		D19F5BC1286F67BF00C5C6AC /* SettingsDomain.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19F5BBC286F5D3400C5C6AC /* SettingsDomain.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +58,11 @@
 		8B3049FC286A230600DB7952 /* Todo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Todo.swift; sourceTree = "<group>"; };
 		8B304A01286A37BD00DB7952 /* TodoDomain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoDomain.swift; sourceTree = "<group>"; };
 		8B304A02286A37BD00DB7952 /* TodoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoView.swift; sourceTree = "<group>"; };
+		D19F5BB2286F4A0900C5C6AC /* OnboardingDomain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingDomain.swift; sourceTree = "<group>"; };
+		D19F5BB3286F4A0900C5C6AC /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		D19F5BBA286F4E9400C5C6AC /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		D19F5BBC286F5D3400C5C6AC /* SettingsDomain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDomain.swift; sourceTree = "<group>"; };
+		D19F5BBD286F5D3400C5C6AC /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -157,6 +167,10 @@
 		8B3049F6286A20CD00DB7952 /* UX */ = {
 			isa = PBXGroup;
 			children = (
+				D19F5BB2286F4A0900C5C6AC /* OnboardingDomain.swift */,
+				D19F5BB3286F4A0900C5C6AC /* OnboardingView.swift */,
+				D19F5BBC286F5D3400C5C6AC /* SettingsDomain.swift */,
+				D19F5BBD286F5D3400C5C6AC /* SettingsView.swift */,
 				8B3049F7286A217500DB7952 /* TodoListDomain.swift */,
 				8B3049F8286A217500DB7952 /* TodoListView.swift */,
 				8B304A01286A37BD00DB7952 /* TodoDomain.swift */,
@@ -169,6 +183,7 @@
 			isa = PBXGroup;
 			children = (
 				8B3049FC286A230600DB7952 /* Todo.swift */,
+				D19F5BBA286F4E9400C5C6AC /* User.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -309,8 +324,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D19F5BBF286F5D3400C5C6AC /* SettingsView.swift in Sources */,
+				D19F5BBB286F4E9400C5C6AC /* User.swift in Sources */,
 				8B304A04286A37BD00DB7952 /* TodoView.swift in Sources */,
 				8B3049FA286A217500DB7952 /* TodoListView.swift in Sources */,
+				D19F5BB5286F4A0900C5C6AC /* OnboardingView.swift in Sources */,
+				D19F5BB4286F4A0900C5C6AC /* OnboardingDomain.swift in Sources */,
+				D19F5BC1286F67BF00C5C6AC /* SettingsDomain.swift in Sources */,
 				8B304A03286A37BD00DB7952 /* TodoDomain.swift in Sources */,
 				8B3049F9286A217500DB7952 /* TodoListDomain.swift in Sources */,
 				8B3049C8286A1F8500DB7952 /* App.swift in Sources */,
